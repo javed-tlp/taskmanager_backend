@@ -1,0 +1,58 @@
+# Node modules
+/node_modules/
+
+# Logs
+*.log
+logs/
+
+# Environment variables
+.env
+
+# Dependency directories
+bower_components/
+
+# Build output
+/dist
+/build
+
+# NPM package lock file (optional, if you want to ignore it)
+# package-lock.json
+
+# Yarn lock file (optional, if you use yarn)
+# yarn.lock
+
+# VSCode settings
+.vscode/
+
+# IDE directories
+.idea/
+
+# MacOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+
+# Linux system files
+*~
+
+# Coverage directory (for testing tools)
+coverage/
+
+# Build directories
+temp/
+tmp/
+
+# npm package cache
+.npm/
+
+# Next.js build folder
+.next/
+
+# Angular build folder
+.angular/
+
+# Firebase and Google Cloud settings
+firebase.json
+firestore.indexes.json
+.firebaserc

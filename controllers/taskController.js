@@ -26,7 +26,7 @@ exports.addTask = async (req, res) => {
 // Get All Tasks for Logged-in User
 exports.getAllTasks = async (req, res) => {
     try {
-        const tasks = await Task.find({ user: req.user._id }); // Use req.user._id
+        const tasks = await Task.find({ user: req.userId }); // Use req.user._id
         res.status(200).json(tasks);
     } catch (err) {
         res.status(500).json({ error: 'Server error' });

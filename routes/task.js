@@ -15,15 +15,17 @@ router.post('/add', verifyToken, async (req, res) => {
         const newTask = new Task({
             title,
             description,
-            user: req.user.id, // Comes from the decoded token in verifyToken middleware
+            user: req.userId, // Use req.userId instead of req.user.id
         });
 
         await newTask.save();
         res.status(201).json({ message: 'Task added successfully', task: newTask });
     } catch (err) {
+        console.error("Task Creation Error:", err); // Log error for debugging
         res.status(500).json({ error: 'Server error' });
     }
 });
+
 
 // Get All Tasks for Logged-in User
 router.get('/getall', verifyToken, async (req, res) => {

@@ -1,4 +1,3 @@
-// Authentication Routes
 const express = require('express');
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
@@ -6,7 +5,10 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const router = express.Router();
 
-const JWT_SECRET = 'YourJWTSecretKey';
+// Load environment variables from .env file
+require('dotenv').config();
+
+const JWT_SECRET = process.env.JWT_SECRET; // Get the secret from .env
 
 // Register
 router.post('/register', [
@@ -45,15 +47,27 @@ router.post('/login', [
 
     try {
         const user = await User.findOne({ email });
-        console.log("User--->",user)
-        if (!user) return res.status(404).json({ error: 'User not found' });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
 
+        // Check if the password matches
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(400).json({ error: 'Invalid credentials' });
+        if (!isMatch) {
+            return res.status(400).json({ error: 'Invalid credentials' });
+        }
 
+        // Generate JWT token
         const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
-        res.status(200).json({ token, user: { id: user._id, name: user.name, email } });
+
+        // Send the response with token and user data
+        res.status(200).json({
+            token,
+            user: { id: user._id, name: user.name, email: user.email }
+        });
+
     } catch (err) {
+        console.error("Login Error:", err);  // Log error for debugging
         res.status(500).json({ error: 'Server error' });
     }
 });

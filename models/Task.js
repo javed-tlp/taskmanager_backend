@@ -1,4 +1,3 @@
-// models/Task.js
 const mongoose = require('mongoose');
 
 const TaskSchema = new mongoose.Schema({
@@ -13,6 +12,10 @@ const TaskSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User', // Reference to User model
         required: true,
+    },
+    userName: {
+        type: String, // Store the user's name
+        required: true, // Make sure userName is always provided
     },
     createdAt: {
         type: Date,

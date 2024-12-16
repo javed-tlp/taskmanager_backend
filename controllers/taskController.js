@@ -1,4 +1,5 @@
 const Task = require('../models/Task');
+const User = require('../models/User'); // Import the User model
 
 // Add a Task
 exports.addTask = async (req, res) => {
@@ -9,10 +10,18 @@ exports.addTask = async (req, res) => {
     }
 
     try {
+        // Fetch the user's name from the User model using req.userId
+        const user = await User.findById(req.userId);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Create a new task with the user's name
         const newTask = new Task({
             title,
             description,
-            user: req.userId, // Use req.user._id
+            user: req.userId, // Store the user ID
+            userName: user.name, // Store the user's name in the task
         });
 
         await newTask.save();

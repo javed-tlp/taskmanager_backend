@@ -38,7 +38,7 @@ exports.updateTask = async (req, res) => {
     const { id, title, description } = req.body;
 
     try {
-        let task = await Task.findOne({ _id: id, user: req.user.id });
+        let task = await Task.findOne({ _id: id, user: req.userId });
         if (!task) return res.status(404).json({ error: 'Task not found' });
 
         task.title = title || task.title;
@@ -57,7 +57,7 @@ exports.deleteTask = async (req, res) => {
     const { id } = req.body;  // Task ID from body
 
     try {
-        const task = await Task.findOneAndDelete({ _id: id, user: req.user.id });
+        const task = await Task.findOneAndDelete({ _id: id, user: req.userId });
         if (!task) return res.status(404).json({ error: 'Task not found' });
 
         res.status(200).json({ message: 'Task deleted successfully' });

@@ -45,7 +45,7 @@ router.post('/delete', verifyToken, [
 router.post('/profile', verifyToken, getProfile);
 
 // Update Profile (Authenticated Route)
-router.post('/profile', [
+router.post('/profileupdate', [
     verifyToken,
     body('name').not().isEmpty().withMessage('Name is required'),
     body('email').isEmail().withMessage('Valid email is required')

@@ -9,7 +9,9 @@ const {
 } = require('../controllers/taskController');
 const {
     register,
-    login
+    login,
+    getProfile,
+    updateProfile
 } = require('../controllers/authController');
 
 const router = express.Router();
@@ -39,4 +41,13 @@ router.post('/delete', verifyToken, [
     body('id').not().isEmpty().withMessage('Task ID is required')
 ], deleteTask); // Delete a task (using POST with body)
 
+// Get Profile (Authenticated Route)
+router.post('/profile', verifyToken, getProfile);
+
+// Update Profile (Authenticated Route)
+router.post('/profile', [
+    verifyToken,
+    body('name').not().isEmpty().withMessage('Name is required'),
+    body('email').isEmail().withMessage('Valid email is required')
+], updateProfile);
 module.exports = router;

@@ -81,6 +81,49 @@ exports.login = async (req, res) => {
 };
 
 
+// Get User Profile
+exports.getProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select('-password'); // Exclude password
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.status(200).json({
+            message: "Profile fetched successfully",
+            Success: true,
+            user,
+        });
+    } catch (err) {
+        console.error("Get Profile Error:", err);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
 
+// Update User Profile
+exports.updateProfile = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
+    const { name, email } = req.body;
 
+    try {
+        const updatedUser = await User.findByIdAndUpdate(
+            req.user.id,
+            { name, email },
+            { new: true, runValidators: true }
+        ).select('-password'); // Exclude password
+
+        if (!updatedUser) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.status(200).json({
+            message: "Profile updated successfully",
+            Success: true,
+            user: updatedUser,
+        });
+    } catch (err) {
+        console.error("Update Profile Error:", err);
+        res.status(500).json({ error: 'Server error' });
+    }
+};

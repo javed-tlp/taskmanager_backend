@@ -29,7 +29,7 @@ exports.verifyToken = (req, res, next) => {
         //.log("Step 6: JWT Verified Successfully. Decoded payload:", decoded);  // Log decoded token
 
         req.userId = decoded.id;  // Attach decoded userId to the request object
-        //.log("Step 7: Attaching decoded userId to req.userId:", req.userId);
+        console.log("Step 7: Attaching decoded userId to req.userId:", req.userId);
 
         next();  // Continue to the next middleware or route handler
     });

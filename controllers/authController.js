@@ -84,7 +84,8 @@ exports.login = async (req, res) => {
 // Get User Profile
 exports.getProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.user.id).select('-password'); // Exclude password
+        const user = await User.findById(req.userId).select('-password'); // Exclude password
+        console.log("USer---->",user)
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }

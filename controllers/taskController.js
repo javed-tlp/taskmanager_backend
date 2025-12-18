@@ -79,28 +79,49 @@ exports.deleteTask = async (req, res) => {
 
 // Upload Image Only API
 exports.uploadTaskImage = async (req, res) => {
-    try {
-        const { image } = req.body;
+    console.log('--- uploadTaskImage API HIT ---');
 
-        // Only image allowed
+    try {
+        console.log('REQ BODY:', req.body);
+        console.log('REQ USER ID:', req.userId);
+
+        const { image, taskId } = req.body;
+
         if (!image) {
-            return res.status(400).json({
-                error: 'Image is required'
-            });
+            console.log('❌ Image missing');
+            return res.status(400).json({ error: 'Image is required' });
         }
+
+        console.log('✅ Image received');
+        console.log('Task ID:', taskId);
 
         // Upload image
         const imagePath = await uploadUPIScannerImage(image);
+        console.log('✅ Image uploaded at:', imagePath);
+
+        // Create mongoose object
+        const taskImage = new TaskImage({
+            task: taskId || null,
+            imageName: imagePath,
+            uploadedBy: req.userId
+        });
+
+        console.log('🟡 TaskImage object before save:', taskImage);
+
+        const savedData = await taskImage.save();
+
+        console.log('✅ TaskImage saved in DB:', savedData);
 
         return res.status(200).json({
-            message: 'Image uploaded successfully',
-            imagePath
+            message: 'Image uploaded & saved successfully',
+            data: savedData
         });
 
     } catch (err) {
-        console.error('Image Upload Error:', err);
+        console.error('❌ Image Upload Error:', err);
         return res.status(400).json({
             error: err.message
         });
     }
 };
+

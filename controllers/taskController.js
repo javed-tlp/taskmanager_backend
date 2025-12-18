@@ -1,5 +1,7 @@
 const Task = require('../models/Task');
 const User = require('../models/User'); // Import the User model
+const { uploadUPIScannerImage } = require('../middleware/base64ToFilePath');
+
 
 // Add a Task
 exports.addTask = async (req, res) => {
@@ -72,5 +74,33 @@ exports.deleteTask = async (req, res) => {
         res.status(200).json({ message: 'Task deleted successfully' });
     } catch (err) {
         res.status(500).json({ error: 'Server error' });
+    }
+};
+
+// Upload Image Only API
+exports.uploadTaskImage = async (req, res) => {
+    try {
+        const { image } = req.body;
+
+        // Only image allowed
+        if (!image) {
+            return res.status(400).json({
+                error: 'Image is required'
+            });
+        }
+
+        // Upload image
+        const imagePath = await uploadUPIScannerImage(image);
+
+        return res.status(200).json({
+            message: 'Image uploaded successfully',
+            imagePath
+        });
+
+    } catch (err) {
+        console.error('Image Upload Error:', err);
+        return res.status(400).json({
+            error: err.message
+        });
     }
 };

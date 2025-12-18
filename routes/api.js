@@ -5,7 +5,7 @@ const {
     addTask,
     getAllTasks,
     updateTask,
-    deleteTask
+    deleteTask, uploadTaskImage
 } = require('../controllers/taskController');
 const {
     register,
@@ -50,4 +50,8 @@ router.post('/profileupdate', [
     body('name').not().isEmpty().withMessage('Name is required'),
     body('email').isEmail().withMessage('Valid email is required')
 ], updateProfile);
+
+// Upload image only
+router.post('/task/upload-image', verifyToken, uploadTaskImage);
+
 module.exports = router;

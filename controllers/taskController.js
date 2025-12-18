@@ -1,6 +1,7 @@
 const Task = require('../models/Task');
 const User = require('../models/User'); // Import the User model
 const { uploadUPIScannerImage } = require('../middleware/base64ToFilePath');
+const TaskImage = require('../models/TaskImage');
 
 
 // Add a Task

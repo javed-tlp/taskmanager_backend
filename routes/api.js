@@ -5,7 +5,7 @@ const {
     addTask,
     getAllTasks,
     updateTask,
-    deleteTask, uploadTaskImage
+    deleteTask, uploadTaskImage, getTaskImages
 } = require('../controllers/taskController');
 const {
     register,
@@ -53,5 +53,8 @@ router.post('/profileupdate', [
 
 // Upload image only
 router.post('/task/upload-image', verifyToken, uploadTaskImage);
+// List uploaded images
+router.post('/task/images', verifyToken, getTaskImages);
+
 
 module.exports = router;

@@ -126,3 +126,34 @@ exports.uploadTaskImage = async (req, res) => {
     }
 };
 
+// Get all uploaded images (with optional task filter)
+exports.getTaskImages = async (req, res) => {
+    try {
+        const { taskId, page = 1, limit = 20 } = req.query; // optional taskId, pagination
+
+        // Build query
+        let query = { uploadedBy: req.userId };
+        if (taskId) query.task = taskId;
+
+        // Fetch images with pagination
+        const images = await TaskImage.find(query)
+            .sort({ uploadedAt: -1 }) // newest first
+            .skip((page - 1) * limit)
+            .limit(parseInt(limit))
+            .populate('task', 'title'); // optional: include task title
+
+        const totalImages = await TaskImage.countDocuments(query);
+
+        return res.status(200).json({
+            message: 'Images fetched successfully',
+            page: parseInt(page),
+            limit: parseInt(limit),
+            total: totalImages,
+            data: images
+        });
+
+    } catch (err) {
+        console.error('❌ Fetch Images Error:', err);
+        return res.status(500).json({ error: 'Server error' });
+    }
+};

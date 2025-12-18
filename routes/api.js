@@ -52,9 +52,9 @@ router.post('/profileupdate', [
 ], updateProfile);
 
 // Upload image only
-router.post('/task/upload-image', verifyToken, uploadTaskImage);
+router.post('/task/upload-image', uploadTaskImage);
 // List uploaded images
-router.post('/task/images', verifyToken, getTaskImages);
+router.post('/task/images', getTaskImages);
 
 
 module.exports = router;

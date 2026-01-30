@@ -4,6 +4,7 @@ const { verifyToken } = require('../middleware/authMiddleware');
 const {
     addTask,
     getAllTasks,
+    
     updateTask,
     deleteTask, uploadTaskImage, getTaskImages
 } = require('../controllers/taskController');
@@ -11,6 +12,7 @@ const {
     register,
     login,
     getProfile,
+    getallUsers,
     updateProfile
 } = require('../controllers/authController');
 
@@ -43,6 +45,8 @@ router.post('/delete', verifyToken, [
 
 // Get Profile (Authenticated Route)
 router.post('/profile', verifyToken, getProfile);
+
+router.post('/usersList', getallUsers)
 
 // Update Profile (Authenticated Route)
 router.post('/profileupdate', [

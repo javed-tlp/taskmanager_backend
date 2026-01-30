@@ -25,8 +25,8 @@ exports.register = async (req, res) => {
         const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
         res.status(201).json({
             message: "Register Successfully",
-            Success: true, 
-            token, 
+            Success: true,
+            token,
             user: { id: user._id, name, email }
         });
     } catch (err) {
@@ -85,7 +85,7 @@ exports.login = async (req, res) => {
 exports.getProfile = async (req, res) => {
     try {
         const user = await User.findById(req.userId).select('-password'); // Exclude password
-        console.log("USer---->",user)
+        console.log("USer---->", user)
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
@@ -99,6 +99,30 @@ exports.getProfile = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
+
+
+// Get All Users
+exports.getallUsers = async (req, res) => {
+    try {
+        const users = await User.find().select('-password'); // ✅ hide password
+
+        return res.status(200).json({
+            message: "Users fetched successfully",
+            Success: true,
+            count: users.length,
+            users
+        });
+
+    } catch (err) {
+        console.error("Get All Users Error:", err);
+        return res.status(500).json({
+            message: "Server error",
+            Success: false,
+            error: err.message
+        });
+    }
+};
+
 
 // Update User Profile
 exports.updateProfile = async (req, res) => {

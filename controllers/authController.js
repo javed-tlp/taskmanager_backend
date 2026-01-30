@@ -104,7 +104,7 @@ exports.getProfile = async (req, res) => {
 // Get All Users
 exports.getallUsers = async (req, res) => {
     try {
-        const users = await User.find().select('-password'); // ✅ hide password
+        const users = await User.find()
 
         return res.status(200).json({
             message: "Users fetched successfully",
